@@ -11,6 +11,19 @@
 # produce a wheel without robotic_grounding, and Sharpa imports skip.
 option(BUNDLE_ROBOTIC_GROUNDING "Bundle V2D's robotic_grounding into the wheel" OFF)
 
+# Entries injected into pyproject.toml.in's packages + package-data
+# for the viz module. Only present when BUILD_VIZ=ON so a -DBUILD_VIZ=OFF
+# wheel build doesn't reference a missing directory.
+if(BUILD_VIZ)
+    set(VIZ_PACKAGES_BLOCK
+        "    \"isaacteleop.viz\",\n")
+    set(VIZ_PACKAGE_DATA_BLOCK
+        "\"isaacteleop.viz\" = [\"*.so\", \"*.pyd\", \"*.pyi\"]\n")
+else()
+    set(VIZ_PACKAGES_BLOCK "")
+    set(VIZ_PACKAGE_DATA_BLOCK "")
+endif()
+
 set(ROBOTIC_GROUNDING_SRC "${CMAKE_SOURCE_DIR}/deps/v2d/src/robotic_grounding")
 if(BUNDLE_ROBOTIC_GROUNDING)
     if(NOT EXISTS "${ROBOTIC_GROUNDING_SRC}/__init__.py")
@@ -73,6 +86,15 @@ add_custom_target(python_package ALL
     COMMENT "Preparing Python package structure"
 )
 
+# viz_py only exists when BUILD_VIZ=ON. Use add_dependencies (not a
+# DEPENDS genex) so the build-order constraint is unconditional under
+# all generators — Windows ninja runs the wheel build in parallel
+# with viz_py's link otherwise and trips a "Permission denied" race
+# on the .pyd file.
+if(BUILD_VIZ)
+    add_dependencies(python_package viz_py)
+endif()
+
 # When deps/v2d/src/robotic_grounding/ is populated (script or CI action),
 # stage it into the wheel staging dir so the resulting Teleop wheel ships
 # robotic_grounding alongside isaacteleop.
@@ -123,6 +145,9 @@ add_custom_command(
             $<TARGET_FILE:oxr_py>
             $<TARGET_FILE:plugin_manager_py>
             $<TARGET_FILE:schema_py>
+            # viz_py's .pyd file as a file-level dependency when BUILD_VIZ=ON
+            # — keeps the wheel build from racing the link. Empty otherwise.
+            $<$<BOOL:${BUILD_VIZ}>:$<TARGET_FILE:viz_py>>
     WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
     COMMENT "Generating .pyi stub files for isaacteleop modules"
 )
