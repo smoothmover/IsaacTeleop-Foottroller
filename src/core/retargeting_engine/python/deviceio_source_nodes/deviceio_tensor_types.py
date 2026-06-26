@@ -18,6 +18,7 @@ from isaacteleop.schema import (
     HandPoseTrackedT,
     ControllerSnapshotTrackedT,
     Generic3AxisPedalOutputTrackedT,
+    FoottrollerOutputTrackedT,
     FullBodyPosePicoTrackedT,
     MessageChannelMessagesTrackedT,
 )
@@ -97,6 +98,26 @@ class Generic3AxisPedalOutputTrackedType(TensorType):
             raise TypeError(
                 f"Expected Generic3AxisPedalOutputTrackedT for '{self.name}', got {type(value).__name__}"
             )
+
+class FoottrollerOutputTrackedType(TensorType):
+    """FoottrollerOutputTrackedT wrapper type from DeviceIO FoottrollerTracker."""
+
+    def __init__(self, name: str) -> None:
+        super().__init__(name)
+
+    def _check_instance_compatibility(self, other: TensorType) -> bool:
+        if not isinstance(other, FoottrollerOutputTrackedType):
+            raise TypeError(
+                f"Expected FoottrollerOutputTrackedType, got {type(other).__name__}"
+            )
+        return True
+
+    def validate_value(self, value: Any) -> None:
+        if not isinstance(value, FoottrollerOutputTrackedT):
+            raise TypeError(
+                f"Expected FoottrollerOutputTrackedT for '{self.name}', got {type(value).__name__}"
+            )
+
 
 
 class FullBodyPosePicoTrackedType(TensorType):
@@ -210,6 +231,16 @@ def DeviceIOGeneric3AxisPedalOutputTracked() -> TensorGroupType:
         [Generic3AxisPedalOutputTrackedType("pedal_tracked")],
     )
 
+def DeviceIOFoottrollerOutputTracked() -> TensorGroupType:
+    """Tracked pedal data from DeviceIO FoottrollerTracker.
+
+    Contains:
+        foottroller_tracked: FoottrollerOutputTrackedT wrapper (always set; .data is None when inactive)
+    """
+    return TensorGroupType(
+        "foottroller_output",
+        [FoottrollerOutputTrackedType("foottroller_tracked")],
+    )
 
 def DeviceIOFullBodyPosePicoTracked() -> TensorGroupType:
     """Tracked full body pose data from DeviceIO FullBodyTrackerPico.

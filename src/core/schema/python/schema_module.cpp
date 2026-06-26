@@ -7,6 +7,7 @@
 
 // Include binding definitions.
 #include "controller_bindings.h"
+#include "foottroller_bindings.h"
 #include "full_body_bindings.h"
 #include "hand_bindings.h"
 #include "head_bindings.h"
@@ -39,6 +40,9 @@ PYBIND11_MODULE(_schema, m)
 
     // Bind pedals types (Generic3AxisPedalOutput table).
     core::bind_pedals(m);
+
+    // Bind foottroller types (FoottrollerOutput table).
+    core::bind_Foottroller(m);
 
     // Bind message channel types (MessageChannelMessages table).
     core::bind_message_channel(m);

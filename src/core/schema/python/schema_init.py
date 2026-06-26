@@ -35,6 +35,10 @@ from ._schema import (
     Generic3AxisPedalOutput,
     Generic3AxisPedalOutputTrackedT,
     Generic3AxisPedalOutputRecord,
+    # Foottroller-related types.
+    FoottrollerOutput,
+    FoottrollerOutputTrackedT,
+    FoottrollerOutputRecord,
     # Message channel types.
     MessageChannelMessages,
     MessageChannelMessagesTrackedT,
