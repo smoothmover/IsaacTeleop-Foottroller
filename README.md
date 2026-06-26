@@ -3,6 +3,51 @@ SPDX-FileCopyrightText: Copyright (c) 2025-2026 NVIDIA CORPORATION & AFFILIATES.
 SPDX-License-Identifier: Apache-2.0
 -->
 
+In this version of IsaacTeleop, a plugin has been added for Foottroller (www.foottroller.com) that enables natural, hands-free locomotion control!
+The plugin reads Foottroller’s raw inputs as gamepad axes and buttons and converts them into full locomotion commands via retargeting. 
+You get smooth velocity control (X & Y), rotation, and robot height adjustment — all through intuitive foot gestures.
+Now you can walk, strafe, turn, and adjust height naturally with your feet, keeping both hands completely free for manipulation, grasping, and other tasks.
+Check out the demo video below to see how to use Foottroller for Robot locomotion control.
+
+Foottroller Isaac Teleop: Natural Foot Gesture for hands-free locomotion (guide with slow motion)
+https://youtu.be/qGGIyA1QBXM
+
+
+How to use:
+Install Isaac Sim 6.0
+Install IsaacLab 3.0.0 beta-2
+
+Clone this repo and 
+build IsaacTeleop:
+    bash
+    rm -rf build install
+    cmake -B build -DISAAC_TELEOP_PYTHON_VERSION=3.12       # use the matching python version for IsaacLab
+    cmake --build build --target clang_format_fix
+    cmake --build build
+    cmake --install build
+Install the new build to IsaacLab:
+    uv pip install "isaacteleop[retargeters,cloudxr,ui]" --find-links=./install/wheels/ --reinstall
+
+Run the foottroller locomotion example to verify Foottroller inputs and retargeter function.
+    Start cloudXR:  https://nvidia.github.io/IsaacTeleop/main/getting_started/quick_start.html
+    In a terminal run cloudXR server
+        python -m isaacteleop.cloudxr
+
+    Connect an XR headset
+
+    Open a new terminal and source the CloudXR environment variables:
+        source ~/.cloudxr/run/cloudxr.env
+    Connect Foottroller to the Linux PC via Bluetooth.
+    Run Foottroller plugin in the terminal
+        In build/src/plugins/foottroller/, run ./foottroller_plugin /dev/input/js0  # make sure /dev/input/js0 is the device path for Foottroller 
+        
+    Open another new terminal and source the CloudXR environment variables:
+        source ~/.cloudxr/run/cloudxr.env
+    Run the example
+        python examples/teleop/python/foottroller_locomotion_example.py
+    Generate locomotion controls with foot gestures using foot gestures as shown in the demo video
+    
+
 ![Isaac Teleop](docs/source/_static/isaac-teleop-hero.jpg)
 
 # Isaac Teleop
