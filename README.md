@@ -19,18 +19,29 @@ Install IsaacLab 3.0.0 beta-2
 
 Clone this repo and 
 build IsaacTeleop:
+
     bash
+    
     rm -rf build install
+    
     cmake -B build -DISAAC_TELEOP_PYTHON_VERSION=3.12       # use the matching python version for IsaacLab
+    
     cmake --build build --target clang_format_fix
+    
     cmake --build build
+    
     cmake --install build
+
 Install the new build to IsaacLab:
+    
     uv pip install "isaacteleop[retargeters,cloudxr,ui]" --find-links=./install/wheels/ --reinstall
 
 Run the foottroller locomotion example to verify Foottroller inputs and retargeter function.
+    
     Start cloudXR:  https://nvidia.github.io/IsaacTeleop/main/getting_started/quick_start.html
+    
     In a terminal run cloudXR server
+    
         python -m isaacteleop.cloudxr
 
     Connect an XR headset
