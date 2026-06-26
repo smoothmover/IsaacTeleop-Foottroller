@@ -4,6 +4,9 @@ SPDX-License-Identifier: Apache-2.0
 -->
 
 In this version of IsaacTeleop, a plugin has been added for Foottroller (www.foottroller.com) that enables natural, hands-free locomotion control!
+
+![Foottroller controlox set to Dev. mode](docs/source/_static/foottrollercrampon.jpg)
+
 The plugin reads Foottroller’s raw inputs as gamepad axes and buttons and converts them into full locomotion commands via retargeting. 
 You get smooth velocity control (X & Y), rotation, and robot height adjustment — all through intuitive foot gestures.
 Now you can walk, strafe, turn, and adjust height naturally with your feet, keeping both hands completely free for manipulation, grasping, and other tasks.
