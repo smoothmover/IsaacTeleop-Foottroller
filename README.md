@@ -48,7 +48,20 @@ Run the foottroller locomotion example to verify Foottroller inputs and retarget
 
     Open a new terminal and source the CloudXR environment variables:
         source ~/.cloudxr/run/cloudxr.env
-    Connect Foottroller to the Linux PC via Bluetooth.
+    
+    
+    Connect Foottroller control box to the Linux PC via Bluetooth.
+    Set Foottroller control box to Dev mode by pressing the button closest to the two LED lights until both LED lights are on. This allows raw Foottroller measurements sent to the PC.
+![Foottroller controlox set to Dev. mode](docs/source/_static/foottroller_ctrl_box.jpg)
+    
+    Set gamepad to zero dead zones for Foottroller axes. 
+    
+    Install jstest-gtk if not installed.
+    
+        sudo apt install jstest-gtk
+
+![Gamepad setting in jstest-gtk to remove gamepad dead zones](docs/source/_static/gamepadsetting.jpeg)
+    
     Run Foottroller plugin in the terminal
         In build/src/plugins/foottroller/, run ./foottroller_plugin /dev/input/js0  # make sure /dev/input/js0 is the device path for Foottroller 
         
